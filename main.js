@@ -7,6 +7,7 @@ const app = Vue.createApp({
         clientName: '',
         orderTime: '',
         orderStatus: '',
+        orderCode: '',
         
         showList: true,
         showDetails: false,
@@ -36,12 +37,15 @@ const app = Vue.createApp({
         this.showDetails = false;
       },
       
-      async getOrder(orderCode) {
-        const response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${orderCode}`);
+      async getOrder( orderCode) {
+        const response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${orderCode}`, {
+            cache: 'no-store',
+          });
         const data = await response.json();
         this.clientName = data.order.client_name;
         this.orderTime = data.order.created_at;
         this.orderStatus = data.order.status;
+        this.orderCode = data.order.alphanumeric_code;
         this.ordemItemsList = data.order_items.map(item => ({
           PortionName: item.portion_name,
           PortionableName: item.portion_description,
@@ -50,6 +54,18 @@ const app = Vue.createApp({
         }));
         this.showList = false;
         this.showDetails = true;
+      },
+
+      async updateData(newStatus) {
+        const response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${this.orderCode}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              status: newStatus, 
+            }),
+          });
       },
     },
   });

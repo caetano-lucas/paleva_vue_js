@@ -39,11 +39,13 @@
 
     <div v-if="showDetails">
       <h1>Detalhes de um Pedido</h1>
-      <button v-on:click="getData">Iniciar Preparo</button>
+      <button v-on:click="updateData(2)">Iniciar Preparo</button>
+      <button v-on:click="updateData(3)">Marcar como pronto</button>
       <ul>
         <li>Cliente: {{ clientName }}</li>
         <li>Hora do Pedido: {{ orderTime }}</li>
         <li>Status: {{ orderStatus }}</li>
+        <li>Código: {{ orderCode}} </li>
       </ul>
       <table>
         <thead>
