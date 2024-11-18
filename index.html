@@ -7,48 +7,33 @@
 </head>
 <body>
   <div id="app">
-    <button v-on:click="showIndex">Lista de Pedidos</button>
+    <h1> Detalhes de um Pedido </h1>
 
-    <div v-if="currentPage === 'index'" >
-      <h2>Lista de Pedidos</h2>
-      <div v-for="order in orders" :key="order.orderCode">
-        <ul>
-          <li>Código: {{orders.orderCode}}</li>
-          <li>Hora do pedido: {{orders.orderTime}}</li>
-          <li>Status: {{orders.orderStatus}}</li>
-          <button v-on:click="showOrderDetails(order.orderCode)">Carregar dados</button>
-        </ul>
-      </div>
-    </div>
-
-    <div v-if="currentPage === 'orderDetails'">
-      <button v-on:click="changeStatus">Alterar Status para "Em Preparação"</button>
-      <h1> Detalhes de um Pedido </h1>
-        <address>
-          <ul>
-            <li>Código: {{orderCode}}</li>
-            <li>Cliente: {{clientName}}</li>
-            <li>Hora do pedido: {{orderTime}}</li>
-            <li>Status: {{orderStatus}}</li>
-          </ul>
-          <table>
-            <thead>
-              <tr>
-                <td> Detalhes da porção: </td>
-                <td> Observação: </td>
-                <td> Quantidade: </td>
-              </tr>
-            </thead>
-            <tbody >
-              <tr v-for="orderItem in ordemItemsList">
-                <td> {{orderItem.PortionName}} {{orderItem.PortionableName}} </td>
-                <td> {{orderItem.Note}}</td>
-                <td> {{orderItem.Quantity}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </address>
-    </div>
+    <button v-on:click='changeStatus'>Alterar Status para "Em Preparação"</button>
+    <button v-on:click='getData'>Carregar dados"</button>
+    <address>
+      <ul>
+        <li>Cliente: {{clientName}}</li>
+        <li>Hora do pedido: {{orderTime}}</li>
+        <li>Status: {{orderStatus}}</li>
+      </ul>
+      <table>
+        <thead>
+          <tr>
+            <td> Detalhes da porção: </td>
+            <td> Observação: </td>
+            <td> Quantidade: </td>
+          </tr>
+        </thead>
+        <tbody >
+          <tr v-for="orderItem in ordemItemsList">
+            <td> {{orderItem.PortionName}} {{orderItem.PortionableName}} </td>
+            <td> {{orderItem.Note}}</td>
+            <td> {{orderItem.Quantity}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </address>
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="main.js"></script>

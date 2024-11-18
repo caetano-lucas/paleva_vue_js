@@ -1,73 +1,49 @@
-
 const app = Vue.createApp({
-  data() {
-      return {
-          orders: [{
-            currentPage: '', 
-            orderCode: '',
-            clientName: '',
-            orderTime: '',
-            orderStatus: '',
-          }            
-          ],
-          ordemItemsList: [
-            {
-                PortionName: '',
-                PortionableName: '',
-                Note: '',
-                Quantity: 12
-            }
-        ]
-      };
-  },
-  methods: {
-      showIndex() {
-          this.currentPage = 'index';
-          this.getOrders();
-      },
+    data(){
+        return{
+            clientName: 'Lucas',
+            orderTime: '08:18h 18/11',
+            orderStatus: 'Aguardando confirmação cozinha',
 
-      showOrderDetails(orderCode) {
-          this.currentPage = 'orderDetails';
-          this.getData(orderCode);
-      },
+            ordemItemsList: [
+                {
+                    PortionName: '12312',
+                    PortionableName: 'aaaaa',
+                    Note: 'bbbbbbbb',
+                    Quantity: 12
+                }
+            ]
+        }
+    },
+    methods:{
+        changeStatus(){
+            this.orderStatus = 'preparação'
+        },
 
-      async getOrders() {
-          let response = await fetch('http://localhost:3000/api/v1/restaurants/11bs0k/orders');
-          let data = await response.json();
-          console.log(data);
+        async getData() {
+            let response = await fetch('http://localhost:3000/api/v1/restaurants/11bs0k/orders/ou5634n4');
+           
+              let data = await response.json();
+              console.log(data);
+              
+              this.orderCode = data.order.alphanumeric_code
+              this.clientName = data.order.client_name
+              this.orderTime = data.order.created_at
+              this.orderStatus = data.order.status
+              this.ordemItemsList = [];
+              data.order_items.forEach(order_item => {
+                const newItem = {
+                    PortionName: order_item.portion_name,
+                    PortionableName: order_item.portion_description,
+                    Note: order_item.note,
+                    Quantity: order_item.quantity
+                };
+                this.ordemItemsList.push(newItem);
+            });
+        }
+      
+    }
 
-          this.orders = data.orders.forEach(item => ({
-            orderCode: item.alphanumeric_code,
-            clientName: item.client_name,
-            orderTime: item.created_at,
-        }))
-      },
+})
 
-      async getData(orderCode) {
-          let response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${orderCode}`);
-          let data = await response.json();
-          console.log('Dados recebidos:', data);
-
-          this.orderCode = data.order.alphanumeric_code;
-          this.clientName = data.order.client_name;
-          this.orderTime = data.order.created_at;
-          this.orderStatus = data.order.status;
-
-          this.ordemItemsList = data.order_items.map(item => ({
-              PortionName: item.portion_name,
-              PortionableName: item.portion_description,
-              Note: item.note,
-              Quantity: item.quantity
-          }));
-      },
-
-      changeStatus() {
-          this.orderStatus = 'Em preparação';
-      }
-  },
-  mounted() {
-      this.getOrders();
-  }
-});
-
-app.mount('#app');
+app.mount('#app')
