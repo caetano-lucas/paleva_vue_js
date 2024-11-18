@@ -3,37 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paleva Vue js</title>
+  <title>Paleva Vue.js</title>
 </head>
 <body>
   <div id="app">
-    <h1> Detalhes de um Pedido </h1>
 
-    <button v-on:click='changeStatus'>Alterar Status para "Em Preparação"</button>
-    <button v-on:click='getData'>Carregar dados"</button>
-    <address>
+    <button v-on:click="getData">Carregar Pedidos Pendentes</button>
+    <button v-if="showDetails" v-on:click="goBack">Voltar para Lista</button>
+
+    <div v-if="showList">
+      <h1>Lista de Pedidos</h1>
+      <table>
+        <thead>
+          <tr>
+            <td>Código</td>
+            <td>Cliente</td>
+            <td>Hora do Pedido</td>
+            <td>Status</td>
+            <td>Ação</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in orders" :key="order.orderCode">
+            <td>{{ order.orderCode }}</td>
+            <td>{{ order.orderClientName }}</td>
+            <td>{{ order.orderTime }}</td>
+            <td>{{ order.orderStatus }}</td>
+            <td>
+              <button v-on:click="getOrder(order.orderCode)">Detalhes do Pedido</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div v-if="showDetails">
+      <h1>Detalhes de um Pedido</h1>
+      <button v-on:click="getData">Iniciar Preparo</button>
       <ul>
-        <li>Cliente: {{clientName}}</li>
-        <li>Hora do pedido: {{orderTime}}</li>
-        <li>Status: {{orderStatus}}</li>
+        <li>Cliente: {{ clientName }}</li>
+        <li>Hora do Pedido: {{ orderTime }}</li>
+        <li>Status: {{ orderStatus }}</li>
       </ul>
       <table>
         <thead>
           <tr>
-            <td> Detalhes da porção: </td>
-            <td> Observação: </td>
-            <td> Quantidade: </td>
+            <td>Porção</td>
+            <td>Descrição</td>
+            <td>Observação</td>
+            <td>Quantidade</td>
           </tr>
         </thead>
-        <tbody >
-          <tr v-for="orderItem in ordemItemsList">
-            <td> {{orderItem.PortionName}} {{orderItem.PortionableName}} </td>
-            <td> {{orderItem.Note}}</td>
-            <td> {{orderItem.Quantity}}</td>
+        <tbody>
+          <tr v-for="orderItem in ordemItemsList" :key="orderItem.PortionName">
+            <td>{{ orderItem.PortionName }}</td>
+            <td>{{ orderItem.PortionableName }}</td>
+            <td>{{ orderItem.Note }}</td>
+            <td>{{ orderItem.Quantity }}</td>
           </tr>
         </tbody>
       </table>
-    </address>
+    </div>
   </div>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="main.js"></script>
