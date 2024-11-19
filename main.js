@@ -8,20 +8,24 @@ const app = Vue.createApp({
         orderTime: '',
         orderStatus: '',
         orderCode: '',
-        
-        showList: true,
+        restaurantCode: '',
+        newLogin: true,
+        showList: false,
         showDetails: false,
       };
     },
     methods: {
-      
+      getRestaurant(restaurantCode){
+        this.restaurantCode = restaurantCode;
+        this.getData()
+      },
       goBack() {
         this.showList = true;
         this.showDetails = false;
       },
       
       async getData() {
-        const response = await fetch('http://localhost:3000/api/v1/restaurants/11bs0k/orders/', {
+        const response = await fetch(`http://localhost:3000/api/v1/restaurants/${this.restaurantCode}/orders/`, {
           cache: 'no-store',
         });
         const data = await response.json();
@@ -33,12 +37,13 @@ const app = Vue.createApp({
           orderTime: order.created_at,
           orderStatus: order.status,
         }));
+        this.newLogin = false;
         this.showList = true;
         this.showDetails = false;
       },
       
       async getOrder( orderCode) {
-        const response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${orderCode}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/restaurants/${this.restaurantCode}/orders/${orderCode}`, {
             cache: 'no-store',
           });
         const data = await response.json();
@@ -52,6 +57,7 @@ const app = Vue.createApp({
           Note: item.note,
           Quantity: item.quantity,
         }));
+        this.newLogin = false;
         this.showList = false;
         this.showDetails = true;
       },

@@ -7,11 +7,14 @@
 </head>
 <body>
   <div id="app">
-
-    <button v-on:click="getData">Carregar Pedidos Pendentes</button>
-    <button v-if="showDetails" v-on:click="goBack">Voltar para Lista</button>
-
+    <div v-if="newLogin">
+      <P>Digite o código alfanumérico do seu restaurante:</P>
+      <input type="text" v-model='restaurantCode' placeholder="ex: 1Iac3s ">
+      <button v-on:click="getRestaurant(restaurantCode)">Entrar</button>
+    </div>
+    
     <div v-if="showList">
+      <button v-on:click="getData">Carregar Pedidos Pendentes</button>
       <h1>Lista de Pedidos</h1>
       <table>
         <thead>
@@ -38,6 +41,9 @@
     </div>
 
     <div v-if="showDetails">
+      <button v-on:click="getData">Carregar Pedidos Pendentes</button>
+      <button v-if="showDetails" v-on:click="getData">Voltar para Lista</button>
+
       <h1>Detalhes de um Pedido</h1>
       <button v-on:click="updateData(2)">Iniciar Preparo</button>
       <button v-on:click="updateData(3)">Marcar como pronto</button>
