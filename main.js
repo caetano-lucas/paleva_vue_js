@@ -63,7 +63,7 @@ const app = Vue.createApp({
       },
 
       async updateData(newStatus) {
-        const response = await fetch(`http://localhost:3000/api/v1/restaurants/11bs0k/orders/${this.orderCode}`, {
+        const response = await fetch(`http://localhost:3000/api/v1/restaurants/${this.restaurantCode}/orders/${this.orderCode}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
